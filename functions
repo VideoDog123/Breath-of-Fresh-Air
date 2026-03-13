@@ -1,0 +1,175 @@
+#Jackson Rodosta
+#Started: 3/5/2026
+#Last updated: 3/13/2026
+#Functions for BFA
+#Functions are broken up into rooms and acts. As well as an interface function that is used by most others.
+#main file calls for an act to be played, then the acts call the rooms. The rooms also call other rooms when applicable.
+#No global variables, just a lot of creative spaghetti.
+
+RED = '\033[91m'
+GREEN = '\033[92m'
+YELLOW = '\033[93m'
+BLUE = '\033[94m'
+MAGENTA = '\033[95m'
+CYAN = '\033[96m'
+WHITE = '\033[97m'
+RESET = '\033[0m'
+# color variables for easy reference
+
+def interface(choices):
+# receives a list of strings and displays them, then asks for the user to choose an option and sends that string back
+# due to how often the player is asked for input this function handles all player input for brevity of the code's syntax
+# error checking performed in the logic of rooms, rooms only accept certain numbers as strings, always '1', '2', '3', or '4'
+    count = 0
+    print()
+    for option in choices:
+        count += 1
+        print(f"{count}. {option}")
+    choice = input("Choose: ")
+    print()
+    return choice
+
+
+def act1():
+#first act, it prints a description of the environment then places the player in room1
+    print(f"{RED}It is dark, above there is light. Wake up.\n{CYAN}You awaken in the dark laying on cold rock.\nYou can't remember how you got here. Ahead of you there are two paths.\nBoth left and right lead into darkness.")
+    room1_wakeUp()
+
+def act2():
+#second act, describes the cave scene before placing the player in room2
+    print("You emerge into a large cave, light fills the chamber from an unknown source.\nBefore you stands an imposing gateway inscribed with text.\nTo your right is a simple doorway that leads down a long corridor.\nTo your left is a crumbling cavern wall, you think you could squeeze through.")
+    room2_cave()
+
+
+def act3(reflected):
+#third act, almost works as a mini room. Lot of text color changes as it describes and handles the two endings.
+#determines if the player is eligible for the 'stay' ending using information from room2
+    print("You walk up to the imposing gate. The words running along its edges pulse in your mind.\nYou reach out with the crystal sphere you found. Both the gate and the orb pulse in unison.\nThe gate begins to part, you feel a pressure in the air you did not notice subside.")
+    print(f"Cautiously you walk past the threshold of the gate. As you do blue light begins to run along the ground.\n{BLUE}The floor in this room is smooth and ornate, the light flows through grooves at the edge of the path.\nThe walkway quickly leads you to a winding staircase that leads far into the ceiling.")
+    print(f"After many steps the side of the winding stairwell opens to show an awe inspiring view.\n{YELLOW}An impossible crystal grows in a looming cavern. It's yellow glow overpowers the blue light of the path. A dark smoke swirls inside.\nStaring into it makes you feel uneasy. You avoid looking at its demanding light.")
+    print(f"After an agonizing climb you find yourself standing before another gateway.\n{CYAN}This one is not blocked by stone however. Instead a shimmering veil covers the exit, like a film of soap.\nLight refracts through the barrier, its warmth a rainbow over your skin. You feel as though you could reach out an pop it.\nAs you reach out you feel your skin crawl, for just a moment you hesitate.\nThis whole place place feels wrong. You aren't sure of what to do.")
+    choices = ["Leave"]
+    if reflected == True:
+        choices.append("Stay")
+    input = interface(choices)
+    while input != "1" or (input != "2" and reflected == True):
+        print(f"{RED}Invalid Input\nLeave{CYAN}")
+        input = interface(choices)
+    if input == "1":
+        print(f"The memories of this dark place oppress you, you can not stand the idea of staying.\nYou reach out and touch the barrier, its blue glows ripples with yellow and black before congealing into a solid dark wall.\nThe lights in the paths below go out. Darkness climbs up towards you. As you panic the barrier shatters with a popping sound. Light pours in blinding you and pushing away the dark.\nAfter a moment you stumble out of the cave.\n{WHITE}You feel the sun on your skin, and a strange weight leaves your shoulders.\nSomething presses on the back of your mind before vanishing for good. The cave behind you lays dormant.\nYou look forward towards a field of golden grass and an endless sky that makes your eyes water.\nWhatever happened in that cave, whatever happens tomorrow, you will be ok.\n{GREEN}You take a deep breath for the first time since you woke up.")
+    elif input == "2" and reflected == True:
+        print(f"Something calls you from the deep, it pushes you to leave. It wants the barrier opened.\n{RED}This place is dark, and you have been trapped here for so long. This is your chance to feel the sun again.{CYAN}\nIt's true. Memories of a cold, dark place return. An ocean of smoke. But there are lies within the truth.\nSome far echo of a memory tells you that you mustn't leave.\n{YELLOW}You look at your cracked hands, yellow crystals ornamenting your sharp nails. This place is your home.\n{RED}This is our last chance.{YELLOW}\nPerhaps, but maybe that's ok. You look away from the barrier, your eyes adjusting as you gaze down at the gargantuan yellow crystal bellow.\nYou remember the winding tunnels and the house you found.\nThis place has secrets, you think you'd like to uncover them.")
+        print(f"{WHITE}You descend the staircase, and reseal the gate.\nYou retread the halls you have wandered before setting your sights deeper.\nThe journey you will go on, the places you will find, and the ancient stories that you will uncover will be grand.\n{GREEN}These dark depths seem brighter now, and the air even seems fresher.")
+
+
+def room1_wakeUp():
+#first environment the player is placed in. Two paths, left leads straight to room2, right shows a dead end.
+#if the player goes down the dead end then a third option appears at the crossroad to 'Turn Around'.
+#turning around reveals the first headache event. It is not required for the 'Stay' ending, but provides a bit more context, and hints at more secrets.
+    choices = ["The Left Path", "The Right Path"]
+    noticeCrystal = False     #only triggers on the way back from the dead end
+    input = interface(choices)
+    while input != "1":    #when the left path ("1") is selected the player laves this function, so loop while that is not the choice
+        if input == "2":
+            print("You feel your way down the right path, the walls are jagged and rough.\nEventually, you reach a dead end. The walls are coated in little crystal buds.\nThe crystals are beautiful, they glow a faint yellow and as if they hold dark smoke swirling inside.\nAfter some time you pull yourself away and return to the chamber you awoke in.")
+            if noticeCrystal == False:
+                choices.append("Turn Around")
+            noticeCrystal = True
+            input = interface(choices)
+        elif input == "3" and noticeCrystal == True:
+            print(f"You feel a strange sense of paranoia. You turn away from the two paths and look towards the wall behind you.\nOn the wall next to where you awoke there is a crystal growing out of the wall.\nIt looks just like the crystals in the dead end, except much much larger. It looks like someone broke it.\nIts glow is faint, and there is no smoke inside.\n{RED}You feel a migraine coming on.\n{CYAN}You look away from the crystal.")
+            input = interface(choices)
+        else:
+            print(f"{RED}Invalid Input{CYAN}")
+            input = interface(choices)
+    print("You stumble down the left path. It twists strange ways before eventually leading you upwards. There is light in the distance.")
+
+def room2_cave():
+# the biggest function, the middle junction. Calls and communicates with room3 by sending its local variables as arguments, then receiving a list from room3's return value
+# keeps the door to act3 locked until the key is found in room3
+# holds the second headache event, but only activates with the boots from room3
+# 'reflected' is acquired in room3, but room2 sends it to act3 to unlock the 'stay' ending
+    choices = ["Forward to the Gate", "Right, Down the Long Corridor", "Left, Through the Broken Wall", "Turn Back"]
+    hasKey = False
+    hasShoes = False
+    headache = False
+    reflected = False
+    input = interface(choices)
+    while input != "1" or hasKey == False:
+        if input == "3" and hasShoes == False:
+            print(f"You squeeze your body through the broken wall and find yourself in a suffocating passageway.\nYou attempt to move forward, but the further you go the more the floor grows dense with small yellow crystals.\n{RED}You cannot press forward without injury.{CYAN} You make your way back to the cave.")
+            input = interface(choices)
+        elif input == "3" and hasShoes == True:
+            if headache == False:
+                print(f"You squeeze your body through the broken wall and enter a suffocating passageway.\nAs you move forward the ground grows dense with sharp yellow crystals.\nLuckily your new shoes negate most of the discomfort of walking on them.\nYou avoid the crystals as much as you can, but inevitably you step on one, cracking it.\nA light stream of smoke curls up around you as the crystals pale yellow light dies coldly.\n{RED}Something in your stomach twists.{CYAN}")
+                print(f"As you make your way forward you find a small cavity in this rough path.\nYou find another yellow crystal, this one much larger. It's nearly as big as you.\nYou attempt to look inside, it's full of smoke.\n{RED}Your eyes unfocus, not wanting to look at what's inside the smoke. You realize you have a headache.{CYAN}\nThis path ends here, and a sense of claustrophobia grips your chest.\nYou carefully make your way back out, this time without breaking anything.")
+                input = interface(choices)
+                headache = True
+            else:
+                print(f"{RED}No.{CYAN}")
+                input = interface(choices)
+        elif input == "1" and hasKey == False:
+            print(f"You walk up to the gate, it glows with a strange power.\nYou place your hand on the seam between the two stone panels and feel a pressure push against you as if in warning.\n{YELLOW}There is no place for a key, but you know it needs one.{CYAN}\nYou step back cautiously from the ominous gate.")
+            input = interface(choices)
+        elif input == "2":
+            print("You step down the long corridor. The walls are perfectly smooth, as if once crafted with great skill and pride.\nAfter a long walk you notice a shape in the distance. It appears to be a house.\nHowever, to your side there is another path that leads further in.")
+            foundItems = room3_corridor(hasKey, hasShoes, headache)
+            hasKey = foundItems[0]
+            hasShoes = foundItems[1]
+            reflected = foundItems[2]
+            print("You emerge into a large cave, light fills the chamber from an unknown source.\nBefore you stands an imposing gateway inscribed with text.\nTo your right is a simple doorway that leads down a long corridor.\nTo your left is a crumbling cavern wall, you think you could squeeze through.")
+            input = interface(choices)
+        elif input == "4":
+            print("You look back to where you came from. The path seems darker than before.\nYou can not bring yourself to descend back into that particular darkness.")
+            input = interface(choices)
+        else:
+            print(f"{RED}Invalid Input{CYAN}")
+            input = interface(choices)
+    act3(reflected)
+
+def room3_corridor(hasKey, hasShoes, headache):
+# only called from within room2, spends a lot of time updating local values with room2
+# this room has a key for room2's gate to act3
+# has the shoes needed for the second headache event
+# holds the third headache event if room2's event has been triggered and governs the 'reflected' variable needed for the 'stay' ending
+    choices = ["Return to the Cave", "Move Towards the House", "Check the Side Path"]
+    input = interface(choices)
+    foundKey = hasKey
+    foundShoes = hasShoes
+    reflective = headache
+    reflected = False
+    while input != "1":
+        if input == "3" and foundShoes == False:
+            print(f"The path leads even deeper. As you do you find more and more hallways and paths, some bright, many dark.\nA sense of anxiety wells inside as you fear getting lost down here.\nJust as you are about to turn back you find a pair of well worn shoes laying next to another passageway.\n{YELLOW}You snatch them up before turning back the way you remember.{CYAN}")
+            foundShoes = True
+            input = interface(choices)
+        elif input == "3" and foundShoes == True:
+            print(f"The memory of the countless passageways gnaws at your courage. Best to stay on the main path.\n{YELLOW}It's nice to have shoes though.{CYAN} You do a couple stomps, they fit perfectly.")
+            input = interface(choices)
+        elif input == "2" and foundKey == False:
+            print(f"You walk up to the house. The lights are off and the door is locked.\nThe house is made of a beautiful marble, accented with wood.\nOn the porch lays a strange object. A blue orb made of a strange crystal resting on a pillow.\nIts faint glow reminds you of the gateway. {YELLOW}You know this to be the key.{CYAN}\nYou feel the surface calling to you.")
+            foundKey = True
+            input = interface(choices)
+        elif input == "2" and foundKey == True and reflective == False:
+            print(f"You approach the house once more. The lights are still off and the door is still locked.\nYou notice a mirror hanging on one of the walls of the porch.\n{RED}You don't want to look. It would just give you a headache.{CYAN}")
+            input = interface(choices)
+        elif input == "2" and foundKey == True and reflective == True:
+            print(f"There's a mirror on the porch. Your head is pounding as you approach.\nYou attempt to look into the mirror but your vision blurs. Your headache is unbearable.\nYou know something is wrong. Something you've been ignoring.\n{RED}You look. Like a human.{CYAN}")
+            print(f"{YELLOW}Almost human.\nHollow eyes stare back from a figure wreathed in yellow crystals that sprout like buds from cracked, stony skin.\nThis is you. This is what you have always been. This cave system is your home.\n{RED}What does this change? You still deserve to see the sky.{CYAN}")
+            reflected = True
+            input = interface(choices)
+        else:
+            print(f"{RED}Invalid Input{CYAN}")
+            input = interface(choices)
+    print("You return to the cave.")
+    return [foundKey, foundShoes, reflected]
+
+
+
+# archived spaghetti that used to communicated with room2, room2 would process this with more if statements
+    # if foundKey == True and foundShoes == True:
+    #     return "KS"
+    # elif foundKey == True and foundShoes == False:
+    #     return "K"
+    # elif foundKey == False and foundShoes == True:
+    #     return "S"
