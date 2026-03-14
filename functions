@@ -46,17 +46,22 @@ def act3(reflected):
 #determines if the player is eligible for the 'stay' ending using information from room2
     print("You walk up to the imposing gate. The words running along its edges pulse in your mind.\nYou reach out with the crystal sphere you found. Both the gate and the orb pulse in unison.\nThe gate begins to part, you feel a pressure in the air you did not notice subside.")
     print(f"Cautiously you walk past the threshold of the gate. As you do blue light begins to run along the ground.\n{BLUE}The floor in this room is smooth and ornate, the light flows through grooves at the edge of the path.\nThe walkway quickly leads you to a winding staircase that leads far into the ceiling.")
-    print(f"After many steps the side of the winding stairwell opens to show an awe inspiring view.\n{YELLOW}An impossible crystal grows in a looming cavern. It's yellow glow overpowers the blue light of the path. A dark smoke swirls inside.\nStaring into it makes you feel uneasy. You avoid looking at its demanding light.")
+    print(f"After many steps the side of the winding stairwell opens to show an awe inspiring view.\n{YELLOW}An impossible crystal, over a hundred feet tall, grows in a looming cavern, piercing the floor and ceiling.\nIts yellow glow overpowers the blue light of the path.\nA dark smoke swirls beneath its glass skin as the stairs wind around it.\nStaring into it makes you feel uneasy. You avoid looking at its demanding light.")
     print(f"After an agonizing climb you find yourself standing before another gateway.\n{CYAN}This one is not blocked by stone however. Instead a shimmering veil covers the exit, like a film of soap.\nLight refracts through the barrier, its warmth a rainbow over your skin. You feel as though you could reach out an pop it.\nAs you reach out you feel your skin crawl, for just a moment you hesitate.\nThis whole place place feels wrong. You aren't sure of what to do.")
     choices = ["Leave"]
     if reflected == True:
         choices.append("Stay")
     input = interface(choices)
-    while input != "1" or (input != "2" and reflected == True):
-        print(f"{RED}Invalid Input\nLeave{CYAN}")
-        input = interface(choices)
+    if reflected == False:
+        while input != "1":
+            print(f"{RED}Invalid Input\nLeave{CYAN}")
+            input = interface(choices)
+    else:
+        while input != "1" and input != "2":
+            print(f"{RED}Invalid Input\nLeave{CYAN}")
+            input = interface(choices)
     if input == "1":
-        print(f"The memories of this dark place oppress you, you can not stand the idea of staying.\nYou reach out and touch the barrier, its blue glows ripples with yellow and black before congealing into a solid dark wall.\nThe lights in the paths below go out. Darkness climbs up towards you. As you panic the barrier shatters with a popping sound. Light pours in blinding you and pushing away the dark.\nAfter a moment you stumble out of the cave.\n{WHITE}You feel the sun on your skin, and a strange weight leaves your shoulders.\nSomething presses on the back of your mind before vanishing for good. The cave behind you lays dormant.\nYou look forward towards a field of golden grass and an endless sky that makes your eyes water.\nWhatever happened in that cave, whatever happens tomorrow, you will be ok.\n{GREEN}You take a deep breath for the first time since you woke up.")
+        print(f"The memories of this dark place oppress you, you can not stand the idea of staying.\nYou reach out and touch the barrier, its blue glows ripples with yellow and black before congealing into a solid dark wall.\nThe lights in the paths below go out. Darkness climbs up towards you. As you panic the barrier shatters with a popping sound.\nLight pours in blinding you and pushing away the dark.\nAfter a moment you stumble out of the cave.\n{WHITE}You feel the sun on your skin, and a strange weight leaves your shoulders.\nSomething presses on the back of your mind before vanishing for good. The cave behind you lays dormant.\nYou look forward towards a field of golden grass and an endless sky that makes your eyes water.\nWhatever happened in that cave, whatever happens tomorrow, you will be ok.\n{GREEN}You take a deep breath for the first time since you woke up.")
     elif input == "2" and reflected == True:
         print(f"Something calls you from the deep, it pushes you to leave. It wants the barrier opened.\n{RED}This place is dark, and you have been trapped here for so long. This is your chance to feel the sun again.{CYAN}\nIt's true. Memories of a cold, dark place return. An ocean of smoke. But there are lies within the truth.\nSome far echo of a memory tells you that you mustn't leave.\n{YELLOW}You look at your cracked hands, yellow crystals ornamenting your sharp nails. This place is your home.\n{RED}This is our last chance.{YELLOW}\nPerhaps, but maybe that's ok. You look away from the barrier, your eyes adjusting as you gaze down at the gargantuan yellow crystal bellow.\nYou remember the winding tunnels and the house you found.\nThis place has secrets, you think you'd like to uncover them.")
         print(f"{WHITE}You descend the staircase, and reseal the gate.\nYou retread the halls you have wandered before setting your sights deeper.\nThe journey you will go on, the places you will find, and the ancient stories that you will uncover will be grand.\n{GREEN}These dark depths seem brighter now, and the air even seems fresher.")
