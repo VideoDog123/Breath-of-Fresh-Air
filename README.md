@@ -5,5 +5,5 @@ Uses player input to describe the surrounding and move between rooms.
 ---
 
 ## Videos
-- [Code Demo] (link here)
+- [Code Demo] (https://youtu.be/_yuQh_RRR2w)
 - [Code Walkthrough] (link here)
