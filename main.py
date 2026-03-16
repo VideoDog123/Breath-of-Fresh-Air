@@ -19,7 +19,7 @@ RESET = '\033[0m'
 def main():
 # displays the title and starts act1, then act2, act3 is handled by room2_cave
     print(f"{BLUE}Welcome to Breath of Fresh Air")
-    print(f"Use 1, 2, 3, and 4 to choose options when prompted\n")
+    print(f"Enter numbers to choose options when prompted\nExample: '1', '2', '3', or '4'\n")
     act1()
     act2()
 
