@@ -1,6 +1,6 @@
 #Jackson Rodosta
 #Started: 3/5/2026
-#Last updated: 3/13/2026
+#Last updated: 3/15/2026
 #BFA text adventure game. Takes user input to describe surroundings and move between rooms. The goal is to reach the surface.
 #This is the main file that calls the necessary functions in order
 
